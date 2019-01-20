@@ -1,13 +1,14 @@
 # DMS-Reworked
-Docker Management System Dashboard
+##Docker Management System Dashboard
+Simple dashboard for docker written in HTML/JavaScript and Python.
 
-Todo:
+Dependencies
+>python3
+>python3-docker api
+>Docker
 
-Finish function to display container information properly.
+Usage:
 
+Pull the repository to a local folder and run 'python3 server/server.py'
 
-DONE:
-
-Fix python back-end to serve dashboard.
-
-Add comments
+The dashboard is now available on your system.
