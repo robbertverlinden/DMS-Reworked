@@ -11,7 +11,9 @@ Docker
 Usage:
 
 Pull the repository to a local folder.
+
 Edit the `baseURL` variable to match your system's IP-address.
-run `python3 server/server.py`
+
+Run `python3 server/server.py`.
 
 The dashboard is now available on your system.
