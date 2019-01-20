@@ -19,40 +19,40 @@
 	
 	// Basic function to do a GET request to the API.
 	function doRequest(url){
-			const Http = new XMLHttpRequest();
-			Http.open("GET", baseURL + url);
-			Http.send();
-			Http.onreadystatechange = function() {
-				// On success, display message returned by API.
-				if (this.readyState == 4 && this.status == 200) {
-					BootstrapDialog.alert(this.responseText);
-				}
+		const Http = new XMLHttpRequest();
+		Http.open("GET", baseURL + url);
+		Http.send();
+		Http.onreadystatechange = function() {
+			// On success, display message returned by API.
+			if (this.readyState == 4 && this.status == 200) {
+				BootstrapDialog.alert(this.responseText);
 			}
 		}
+	}
 	
 	// Does a API request to stop a container with ID.
 	function stopContainer(id){
-			doRequest('stopContainer/'+id);
-			updateDashData();
-		}
+		doRequest('stopContainer/'+id);
+		updateDashData();
+	}
 		
 	// Does a API request to start a container with ID.
 	function startContainer(id){
-			doRequest('startContainer/'+id);
-			updateDashData();
-		}
+		doRequest('startContainer/'+id);
+		updateDashData();
+	}
 		
 	// Does a API request to pause a container with ID.
 	function pauseContainer(id){
-			doRequest('pauseContainer/'+id);
-			updateDashData();
-		}	
+		doRequest('pauseContainer/'+id);
+		updateDashData();
+	}	
 
 	// Does a API request to resume a container with ID.
 	function unpauseContainer(id){
-			doRequest('unpauseContainer/'+id);
-			updateDashData();
-		}
+		doRequest('unpauseContainer/'+id);
+		updateDashData();
+	}
 
 	// Does a API request to the API to load the initial dashboard data.
 	// Inserts data upside down!
