@@ -14,49 +14,53 @@
     <link rel="stylesheet" href="../assets/libs/css/bootstrap-dialog.min.css">
     <script src="../assets/vendor/jquery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript">
+	// URL which runs the python management system, and docker of course.
 	var baseURL = "http://192.168.56.131:5000/api/";
 	
+	// Basic function to do a GET request to the API.
 	function doRequest(url){
 			const Http = new XMLHttpRequest();
 			Http.open("GET", baseURL + url);
 			Http.send();
 			Http.onreadystatechange = function() {
+				// On success, display message returned by API.
 				if (this.readyState == 4 && this.status == 200) {
 					BootstrapDialog.alert(this.responseText);
 				}
 			}
 		}
 	
+	// Does a API request to stop a container with ID.
 	function stopContainer(id){
 			doRequest('stopContainer/'+id);
 			updateDashData();
 		}
 		
+	// Does a API request to start a container with ID.
 	function startContainer(id){
 			doRequest('startContainer/'+id);
 			updateDashData();
 		}
 		
+	// Does a API request to pause a container with ID.
 	function pauseContainer(id){
 			doRequest('pauseContainer/'+id);
 			updateDashData();
 		}	
 
+	// Does a API request to resume a container with ID.
 	function unpauseContainer(id){
 			doRequest('unpauseContainer/'+id);
 			updateDashData();
 		}
 
-    function sleep(delay) {
-			var start = new Date().getTime();
-			while (new Date().getTime() < start + delay);
-		}
-	
+	// Intended to show container info in popup, might create seperate page.
 	function getContainerInfo(id){
 			
 		}
-	
 
+	// Does a API request to the API to load the initial dashboard data.
+	// Inserts data upside down!
 	function loadDashData(){
 		$.getJSON(baseURL + 'listContainers', function(data) {
 			for (var key in data) {
@@ -64,7 +68,7 @@
 					// Find a <table> element with id="containerTable":
 					var table = document.getElementById("containerTable");
 
-					// Create an empty <tr> element and add it to the 2nd position of the table:
+					// Create an empty <tr> element and add it to the 2nd position of the table (because of header row):
 					var row = table.insertRow(1);
 
 					// Insert new cells (<td> elements) at the positions of the "new" <tr> element:
@@ -73,8 +77,10 @@
 					var cell4 = row.insertCell(2);
 					var cell5 = row.insertCell(3);
 					
-					// Inser data into cells:
+					// To make it easier to write the button functions.
 					var id = data[key].id;
+					
+					// Assign badges to the elements based on state.
 					if (data[key].state == "created"){var state = "<span class=\"badge badge-primary\">Created</span>"}
 					if (data[key].state == "restarting"){var state = "<span class=\"badge badge-info\">Restarting</span>"}
 					if (data[key].state == "running"){var state = "<span class=\"badge badge-success\">Running</span>"}
@@ -86,36 +92,38 @@
 					if (data[key].state == "exited" || data[key].state == "created" || data[key].state == "dead" || data[key].state == "restarting"){ var buttons = "<button onclick=\"startContainer(\'"+id+"\')\" class=\"btn btn-success\">Start</button>"}
 					if (data[key].state == "paused"){ var buttons = "<button onclick=\"stopContainer(\'"+id+"\')\" class=\"btn btn-danger\">Stop</button><button onclick=\"unpauseContainer(\'"+id+"\')\" class=\"btn btn-primary\">Resume</button>"}
 					if (data[key].state == "running"){ var buttons = "<button onclick=\"stopContainer(\'"+id+"\')\" class=\"btn btn-danger\">Stop</button><button onclick=\"pauseContainer(\'"+id+"\')\" class=\"btn btn-warning\">Pause</button>"}
-										
+					
+					// Inser data into cells:
 					cell2.innerHTML = id;
 					cell3.innerHTML = data[key].name;
 					cell4.innerHTML = state;
-					cell5.innerHTML = buttons + "<button onclick=\"infoContainer(\'"+id+"\')\" class=\"btn btn-info\">Information</button>";
+					cell5.innerHTML = buttons + "<button onclick=\"infoContainer(\'"+id+"\')\" class=\"btn btn-info\">Information</button>"; // Fixed info button
 				}
 			}
 		});
 	}
 	
 	function updateDashData(){
+		// Update the data upside down (because of the loadDashData function.
 		$.getJSON(baseURL + 'listContainers', function(data) {
 			var rows = document.getElementById("containerTable").getElementsByTagName("tr").length;
 			var count = rows - 2;
 			
 			for (var key in data) {
 				if (data.hasOwnProperty(key)) {					
-					// Find a <table> element with id="containerTable":
+					// Find a <table> element with id="containerTable" and count the rows.
 					var row = document.getElementById("containerTable").rows[count].cells;
 
-					// Create an empty <tr> element and add it to the 2nd position of the table:
-
-					// Insert new cells (<td> elements) at the positions of the "new" <tr> element:
+					// Define the cells.
 					var cell2 = row[0];
 					var cell3 = row[1];
 					var cell4 = row[2];
 					var cell5 = row[3];
 					
-					// Update cells:
+					// To make it easier to write the button functions.
 					var id = data[key].id;
+					
+					// Assign badges to the elements based on state.
 					if (data[key].state == "created"){var state = "<span class=\"badge badge-primary\">Created</span>"}
 					if (data[key].state == "restarting"){var state = "<span class=\"badge badge-info\">Restarting</span>"}
 					if (data[key].state == "running"){var state = "<span class=\"badge badge-success\">Running</span>"}
@@ -127,19 +135,24 @@
 					if (data[key].state == "exited" || data[key].state == "created" || data[key].state == "dead" || data[key].state == "restarting"){ var buttons = "<button onclick=\"startContainer(\'"+id+"\')\" class=\"btn btn-success\">Start</button>"}
 					if (data[key].state == "paused"){ var buttons = "<button onclick=\"stopContainer(\'"+id+"\')\" class=\"btn btn-danger\">Stop</button><button onclick=\"unpauseContainer(\'"+id+"\')\" class=\"btn btn-primary\">Resume</button>"}
 					if (data[key].state == "running"){ var buttons = "<button onclick=\"stopContainer(\'"+id+"\')\" class=\"btn btn-danger\">Stop</button><button onclick=\"pauseContainer(\'"+id+"\')\" class=\"btn btn-warning\">Pause</button>"}
-										
+					
+					// Update cells:					
 					cell2.innerHTML = id;
 					cell3.innerHTML = data[key].name;
 					cell4.innerHTML = state;
-					cell5.innerHTML = buttons + "<button onclick=\"infoContainer(\'"+id+"\')\" class=\"btn btn-info\">Information</button>";
+					cell5.innerHTML = buttons + "<button onclick=\"infoContainer(\'"+id+"\')\" class=\"btn btn-info\">Information</button>"; // Fixed info button
+					
+					// Countdown because of inverted direction
 					count--;
 				}
 			}
 		});
 	}
 	
+	// Load the dashboard, thus creating rows.
 	loadDashData();
 	
+	// Update rows every 5 seconds.
 	setInterval(updateDashData, 5000)
 	
 	</script>
