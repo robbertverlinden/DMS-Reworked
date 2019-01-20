@@ -14,17 +14,20 @@
     <link rel="stylesheet" href="../assets/libs/css/bootstrap-dialog.min.css">
     <script src="../assets/vendor/jquery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript">
+	// URL which runs the python management system, and docker of course.
 	var baseURL = "http://192.168.56.131:5000/api/";
 	
+	// Save the URL to a variable to get the ID
 	var url = new URL(window.location.href);
 	var containerID = url.searchParams.get("id");
 	
-	
+	// Get the data from the api based on containerID
 	$.getJSON(baseURL + "container/" + containerID , function(data) {
-		
+	
+		// Get the table element and manipulate individual cells.
 		table = document.getElementById("containerTable");
 		table.rows[1].cells[1].innerHTML = data.Id;
-		table.rows[2].cells[1].innerHTML = data.Name.replace(/\//g,'');
+		table.rows[2].cells[1].innerHTML = data.Name.replace(/\//g,''); // Strip the /
 		table.rows[3].cells[1].innerHTML = data.State.Status;
 		table.rows[4].cells[1].innerHTML = data.NetworkSettings.IPAddress;
 		table.rows[5].cells[1].innerHTML = data.Config.Cmd;
@@ -36,7 +39,7 @@
 		table.rows[11].cells[1].innerHTML = data.State.StartedAt;
 		table.rows[12].cells[1].innerHTML = data.State.FinishedAt;
 		
-		document.getElementById("containerName").innerHTML = "Details of container " + data.Name.replace(/\//g,'');
+		document.getElementById("containerName").innerHTML = "Details of container " + data.Name.replace(/\//g,''); // Strip the /
 	
 	});
 	
