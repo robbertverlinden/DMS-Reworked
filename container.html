@@ -19,9 +19,24 @@
 	var url = new URL(window.location.href);
 	var containerID = url.searchParams.get("id");
 	
+	
 	$.getJSON(baseURL + "container/" + containerID , function(data) {
-	var array = JSON.stringify(data);
-    alert(array);
+		
+		table = document.getElementById("containerTable");
+		table.rows[1].cells[1].innerHTML = data.Id;
+		table.rows[2].cells[1].innerHTML = data.Name.replace(/\//g,'');
+		table.rows[3].cells[1].innerHTML = data.State.Status;
+		table.rows[4].cells[1].innerHTML = data.NetworkSettings.IPAddress;
+		table.rows[5].cells[1].innerHTML = data.Config.Cmd;
+		table.rows[6].cells[1].innerHTML = data.Config.Domainname;
+		table.rows[7].cells[1].innerHTML = data.Config.Hostname;
+		table.rows[8].cells[1].innerHTML = data.Config.Image;
+		table.rows[9].cells[1].innerHTML = data.Platform;
+		table.rows[10].cells[1].innerHTML = data.Created;
+		table.rows[11].cells[1].innerHTML = data.State.StartedAt;
+		table.rows[12].cells[1].innerHTML = data.State.FinishedAt;
+		
+		document.getElementById("containerName").innerHTML = "Details of container " + data.Name.replace(/\//g,'');
 	
 	});
 	
@@ -95,7 +110,7 @@
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="page-header">
-                            <h2 class="pageheader-title">Overview of docker containers </h2>
+                            <h2 id="containerName" class="pageheader-title">Overview of docker container </h2>
                         </div>
                     </div>
                 </div>
@@ -107,18 +122,65 @@
                         <!-- ============================================================== -->
                         <!-- striped table -->
                         <!-- ============================================================== -->
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-xl-12 col-lg-6 col-md-12 col-sm-12 col-12">
                             <div class="card">
-                                <h5 class="card-header">All containers</h5>
+                                <h5 class="card-header">Basic configuration</h5>
                                 <div class="card-body">
                                     <table id="containerTable" class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th scope="col">Field</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Value</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
+												<td>ID</td>
+												<td></td>
+                                            </tr>
+											<tr>
+												<td>Name</td>
+												<td></td>
+                                            </tr>
+											<tr>
+												<td>State</td>
+												<td></td>
+                                            </tr>
+											<tr>
+												<td>IP-Address</td>
+												<td></td>
+                                            </tr>
+											<tr>
+												<td>Command</td>
+												<td></td>
+                                            </tr>
+											<tr>
+												<td>Domain Name</td>
+												<td></td>
+                                            </tr>
+											<tr>
+												<td>Hostname</td>
+												<td></td>
+                                            </tr>
+											<tr>
+												<td>Image</td>
+												<td></td>
+                                            </tr>
+											<tr>
+												<td>Platform</td>
+												<td></td>
+                                            </tr>
+											<tr>
+												<td>Created</td>
+												<td></td>
+                                            </tr>
+											<tr>
+												<td>Started at</td>
+												<td></td>
+                                            </tr>
+											<tr>
+												<td>Finished at</td>
+												<td></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -128,9 +190,10 @@
                         <!-- ============================================================== -->
                         <!-- end striped table -->
                         <!-- ============================================================== -->
-						<button onclick="loadDashData()" class="btn btn-success">Load data</button><button onclick="updateDashData()" class="btn btn-info">Update data</button>
+                        <a href="/" class="btn btn-primary">Return to overview</a>
                     </div>
-            </div>
+					
+			</div>
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
