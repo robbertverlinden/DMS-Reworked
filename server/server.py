@@ -19,6 +19,16 @@ app = Flask(__name__, static_folder="../assets", template_folder="../")
 def index():
     return render_template("index.html")
 
+# Serve index.html at /
+@app.route("/index.html")
+def indexhtml():
+    return render_template("index.html")
+
+# Server container.html at /container/
+@app.route("/container/")
+def cInfo():
+    return render_template("container.html")
+
 # Function to test the docker API connection, returns version.
 @app.route("/api/testApi")
 def testApi():
