@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, send_from_directory
 JSONIFY_PRETTYPRINT_REGULAR = True
 
 import os
@@ -11,14 +11,15 @@ client = docker.from_env()
 
 errorMsg = "Something is wrong with the docker API, try to run the server with elevated rights or restart the docker daemon"
 
-app = Flask(__name__, static_folder="../static", template_folder="../static")
+app = Flask(__name__, static_folder="../assets", template_folder="../")
 
-   
 
+# Serve index.html at /
 @app.route("/")
 def index():
     return render_template("index.html")
 
+# Function to test the docker API connection, returns version.
 @app.route("/api/testApi")
 def testApi():
     try:
@@ -26,6 +27,7 @@ def testApi():
     except docker.errors.APIError: 
         return errorMsg
 
+# Returns JSON of all containers		
 @app.route("/api/listContainers/")
 def listContainers():
     try:
@@ -35,11 +37,13 @@ def listContainers():
         print(ex.__cause__)
         return errorMsg
 
+# Starts a new container with mysqln csi and npm
 @app.route("/api/startNewContainer")
 def startNewContainer():
     client.containers.run("hypush/csi", "service mysql start && npm start")
     return "New CSI container has been started"
 
+# Starts container with conID
 @app.route("/api/startContainer/<conID>")
 def startContainer(conID):
     try:
@@ -51,6 +55,7 @@ def startContainer(conID):
         print("container could not be started")
         return "container could not be started"
 
+# Stops container with conID
 @app.route("/api/stopContainer/<conID>")
 def stopContainer(conID):
     try:
@@ -61,7 +66,8 @@ def stopContainer(conID):
     except docker.errors.APIError: 
         print("container could not be stoped")
         return "container could not be stoped"
-            
+
+# Pauses container with conID
 @app.route("/api/pauseContainer/<conID>")
 def pauseContainer(conID):
     try:
@@ -73,6 +79,7 @@ def pauseContainer(conID):
         print("container could not be paused")
         return "container could not be paused"
 
+# Resumes container with conID
 @app.route("/api/unpauseContainer/<conID>")
 def unpauseContainer(conID):
     try:
@@ -84,7 +91,7 @@ def unpauseContainer(conID):
         print("container could not be resumed")
         return "container could not be resumed"
 
-
+# Returns all information of container with conID
 @app.route("/api/container/<conID>")
 def containerID(conID):
     try:
@@ -92,6 +99,7 @@ def containerID(conID):
     except (docker.errors.NotFound, docker.errors.APIError):
         return "Container does not exist or has been mistyped"
 
+# Returns running processes on container with conID
 @app.route("/api/containerTop/<conID>")
 def attachAndRunTop(conID):
     try:
@@ -100,5 +108,6 @@ def attachAndRunTop(conID):
     except docker.errors.APIError:
         return errorMsg 
 
+# Start flask, listening on all interfaces.
 if __name__ == '__main__':
     app.run(host= '0.0.0.0')
