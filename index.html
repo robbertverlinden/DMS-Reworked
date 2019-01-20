@@ -35,6 +35,12 @@
 		doRequest('stopContainer/'+id);
 		updateDashData();
 	}
+
+	// Does a API request to stop a container with ID.
+	function testDockerAPI(){
+		doRequest('testApi');
+		updateDashData();
+	}
 		
 	// Does a API request to start a container with ID.
 	function startContainer(id){
@@ -256,7 +262,7 @@
                         <!-- ============================================================== -->
                         <!-- end striped table -->
                         <!-- ============================================================== -->
-					<!--<button onclick="loadDashData()" class="btn btn-success">Load data</button><button onclick="updateDashData()" class="btn btn-info">Update data</button>-->
+					<button onclick="testDockerAPI()" class="btn btn-primary">Test Docker API</button><!--<button onclick="updateDashData()" class="btn btn-info">Update data</button>-->
                     </div>
             </div>
             <!-- ============================================================== -->
