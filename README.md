@@ -1,5 +1,5 @@
 # DMS-Reworked
-##Docker Management System Dashboard
+## Docker Management System Dashboard
 Simple dashboard for docker written in HTML/JavaScript and Python.
 
 Dependencies
