@@ -54,11 +54,6 @@
 			updateDashData();
 		}
 
-	// Intended to show container info in popup, might create seperate page.
-	function getContainerInfo(id){
-			
-		}
-
 	// Does a API request to the API to load the initial dashboard data.
 	// Inserts data upside down!
 	function loadDashData(){
@@ -140,7 +135,7 @@
 					cell2.innerHTML = id;
 					cell3.innerHTML = data[key].name;
 					cell4.innerHTML = state;
-					cell5.innerHTML = buttons + "<button onclick=\"infoContainer(\'"+id+"\')\" class=\"btn btn-info\">Information</button>"; // Fixed info button
+					cell5.innerHTML = buttons + "<a href=\"container/?id="+id+"\" class=\"btn btn-info\">Information</button>"; // Fixed info button
 					
 					// Countdown because of inverted direction
 					count--;
